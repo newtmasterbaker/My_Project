@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Delivery Note</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        label, button {
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        select, .company-list {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 10px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <script>
+        function getSelectedCompany() {
+            const companyRadios = document.querySelectorAll('input[name="company"]');
+            let selectedCompany = null;
+            companyRadios.forEach(radio => {
+                if (radio.checked) {
+                    selectedCompany = radio.value;
+                }
+            });
+            return selectedCompany;
+        }
+
+        function generateDeliveryNote() {
+            const company = getSelectedCompany();
+            const day = document.getElementById('day').value;
+            if (company) {
+                const url = `/generate_delivery_note?company=${encodeURIComponent(company)}&day=${encodeURIComponent(day)}`;
+                window.open(url, '_blank');
+            }
+        }
+
+        function printDeliveryNote() {
+            const company = getSelectedCompany();
+            const day = document.getElementById('day').value;
+            if (company) {
+                const url = `/generate_delivery_note?company=${encodeURIComponent(company)}&day=${encodeURIComponent(day)}&print_pdf=true`;
+                window.open(url, '_blank');
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Generate Delivery Note</h1>
+        <form onsubmit="event.preventDefault(); generateDeliveryNote();">
+            <label for="company">Select Company:</label>
+            <div class="company-list">
+                {% for company in companies %}
+                <div>
+                    <input type="radio" id="company_{{ loop.index }}" name="company" value="{{ company.name }}" required>
+                    <label for="company_{{ loop.index }}">{{ company.name }}</label>
+                </div>
+                {% endfor %}
+            </div>
+            <label for="day">Choose a day:</label>
+            <select name="day" id="day" required>
+                <option value="Whole Week">Whole Week</option>
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday">Saturday</option>
+                <option value="Sunday">Sunday</option>
+            </select>
+            <button type="submit">Generate Delivery Note</button>
+        </form>
+        <button class="button" onclick="printDeliveryNote()">Print PDF</button>
+        <a class="button" href="{{ url_for('admin_panel') }}">Return to Admin</a>
+    </div>
+</body>
+</html>

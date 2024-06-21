@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Bakery Order Management System</h1>
+        {% if logged_in %}
+            <p>Hello, {{ name }} {{ surname }}</p>
+            <a class="button" href="{{ url_for('summary') }}">View Orders</a>
+            <a class="button" href="{{ url_for('logout') }}">Logout</a>
+            {% if session['is_admin'] %}
+                <a class="button" href="{{ url_for('admin_panel') }}">Admin Page</a>
+            {% endif %}
+        {% else %}
+            <a class="button" href="{{ url_for('login') }}">Login</a>
+            <a class="button" href="{{ url_for('register') }}">Register</a>
+        {% endif %}
+    </div>
+    <div class="container">
+        <h2>Before you place an order register your email place an order registe</h2>
+        <h2>Before you place an order register your email place an order registe</h2>
+        <h2>Before you place an order register your email place an order registe</h2>
+        <h2>Before you place an order register your email place an order registe</h2>
+        <h2>Before you place an order register your email place an order registe</h2>
+        <h2>Before you place an order register your email place an order registe</h2>
+        <h2>Before you place an order register your email place an order registe</h2>
+        <h2>Before you place an order register your email place an order registe</h2>
+    </div>
+</body>
+</html>

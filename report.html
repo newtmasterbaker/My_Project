@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>The Newt In Somersert - The Estate Bakery</title>
+    <title>Delivery Note for {{ company }} - {{ day }}</title>
+    <style>
+        @page {
+            size: A4 landscape; /* Set page size and orientation */
+            margin: 1cm; /* Set margin */
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 100%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+            font-size: 10pt;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>The Newt In Somerset</h1>
+        <h1>The Estate Bakery Delivery Note for {{ company }}</h1>
+        <h2>{{ day }}</h2>
+        <table>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+                <th>Saturday</th>
+                <th>Sunday</th>
+                <th>Total Price</th>
+                <th>Ordered By</th>
+            </tr>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.product }}</td>
+                <td>£{{ order.price }}</td>
+                <td>{{ order.monday }}</td>
+                <td>{{ order.tuesday }}</td>
+                <td>{{ order.wednesday }}</td>
+                <td>{{ order.thursday }}</td>
+                <td>{{ order.friday }}</td>
+                <td>{{ order.saturday }}</td>
+                <td>{{ order.sunday }}</td>
+                <td>£{{ order.total_price }}</td>
+                <td>{{ order.name }} {{ order.surname }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

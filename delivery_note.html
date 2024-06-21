@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delivery Note</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+    <script>
+        function printPage() {
+            window.print();
+        }
+        {% if print_pdf %}
+        window.onload = function() {
+            window.print();
+        };
+        {% endif %}
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Delivery Note for {{ company }}</h1>
+        <h2>{{ day }} - {{ current_date }}</h2>
+
+        {% if day == "Whole Week" %}
+        <table>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+                <th>Saturday</th>
+                <th>Sunday</th>
+                <th>Total Quantity</th>
+                <th>Total Price</th>
+                <th>Ordered By</th>
+            </tr>
+            {% for product, details in aggregated_orders.items() %}
+            <tr>
+                <td>{{ product }}</td>
+                <td>£{{ details.price }}</td>
+                <td>{{ details.monday }}</td>
+                <td>{{ details.tuesday }}</td>
+                <td>{{ details.wednesday }}</td>
+                <td>{{ details.thursday }}</td>
+                <td>{{ details.friday }}</td>
+                <td>{{ details.saturday }}</td>
+                <td>{{ details.sunday }}</td>
+                <td>{{ details.total_quantity }}</td>
+                <td>£{{ details.total_price }}</td>
+                <td>{{ details.ordered_by }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <table>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+                <th>Ordered By</th>
+            </tr>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.product }}</td>
+                <td>£{{ order.price }}</td>
+                <td>{{ order.quantity }}</td>
+                <td>£{{ order.total_price }}</td>
+                <td>{{ order.ordered_by }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+
+        <button class="button no-print" onclick="printPage()">Print</button>
+        <a class="button no-print" href="{{ url_for('admin_panel') }}">Return to Admin</a>
+    </div>
+</body>
+</html>

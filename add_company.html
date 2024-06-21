@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Company</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        label, input, button, select {
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        label {
+            text-align: left;
+        }
+        button, a.button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 12px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        button:hover, a.button:hover {
+            background-color: #45a049;
+        }
+        input[type="text"], input[type="number"], input[type="email"], input[type="password"], select {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 10px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .actions form {
+            display: inline;
+        }
+        .actions button {
+            width: 80px;
+        }
+    </style>
+    <script>
+        function editCompany(companyId) {
+            const row = document.getElementById(`company-${companyId}`);
+            const nameCell = row.querySelector('.company-name');
+            const editButton = row.querySelector('.edit-button');
+            const deleteButton = row.querySelector('.delete-button');
+
+            const companyName = nameCell.textContent;
+            nameCell.innerHTML = `<input type="text" value="${companyName}" id="edit-name-${companyId}">`;
+
+            editButton.textContent = 'Save Changes';
+            editButton.setAttribute('onclick', `saveChanges(${companyId})`);
+            deleteButton.style.display = 'none';
+        }
+
+        function saveChanges(companyId) {
+            const newName = document.getElementById(`edit-name-${companyId}`).value;
+            const formData = new FormData();
+            formData.append('company_id', companyId);
+            formData.append('company_name', newName);
+
+            const url = `{{ url_for('edit_company', company_id=0) }}`.replace('0', companyId);
+
+            fetch(url, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                location.reload();
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Add Company</h1>
+        <form method="post" action="{{ url_for('add_company') }}">
+            <label for="company_name">Company Name:</label>
+            <input type="text" id="company_name" name="company_name" required>
+            <button type="submit">Add Company</button>
+        </form>
+        <h2>Existing Companies</h2>
+        <table>
+            <tr>
+                <th>Company Name</th>
+                <th>Actions</th>
+            </tr>
+            {% for company in companies %}
+            <tr id="company-{{ company['id'] }}">
+                <td class="company-name">{{ company['name'] }}</td>
+                <td class="actions">
+                    <form method="post" action="{{ url_for('delete_company', company_id=company['id']) }}" style="display:inline;">
+                        <button type="submit" class="button delete-button">Delete</button>
+                    </form>
+                    <button type="button" class="button edit-button" onclick="editCompany('{{ company['id'] }}')">Edit</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <a class="button" href="{{ url_for('admin_panel') }}">Return to Admin Page</a>
+    </div>
+</body>
+</html>

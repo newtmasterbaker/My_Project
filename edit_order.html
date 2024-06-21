@@ -1,0 +1,84 @@
+<!-- edit_order.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Order</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 50%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        input[type="text"], input[type="number"], input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 10px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button, input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover, input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Order</h1>
+        <form method="post">
+            <label for="product">Product:</label>
+            <input type="text" id="product" name="product" value="{{ order['product'] }}" required>
+
+            <label for="price">Price:</label>
+            <input type="number" id="price" name="price" step="0.01" value="{{ order['price'] }}" {% if not session['is_admin'] %}readonly{% endif %}>
+
+            <label for="Monday">Monday:</label>
+            <input type="number" id="Monday" name="Monday" value="{{ order['monday'] }}">
+
+            <label for="Tuesday">Tuesday:</label>
+            <input type="number" id="Tuesday" name="Tuesday" value="{{ order['tuesday'] }}">
+
+            <label for="Wednesday">Wednesday:</label>
+            <input type="number" id="Wednesday" name="Wednesday" value="{{ order['wednesday'] }}">
+
+            <label for="Thursday">Thursday:</label>
+            <input type="number" id="Thursday" name="Thursday" value="{{ order['thursday'] }}">
+
+            <label for="Friday">Friday:</label>
+            <input type="number" id="Friday" name="Friday" value="{{ order['friday'] }}">
+
+            <label for="Saturday">Saturday:</label>
+            <input type="number" id="Saturday" name="Saturday" value="{{ order['saturday'] }}">
+
+            <label for="Sunday">Sunday:</label>
+            <input type="number" id="Sunday" name="Sunday" value="{{ order['sunday'] }}">
+
+            <input type="submit" value="Save Changes">
+        </form>
+    </div>
+</body>
+</html>
